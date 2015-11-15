@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> BookStore Transaction API </title>
+	<meta name="author" content="Lee Middleton" />
+	<meta name="keywords" content="CIS122" />
+	<meta name="description" content="BookStore Database Transaction API" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<style type='text/css'>
+		ul {
+			font-family: Courier New, courier;
+			font-size: 20px;
+			color: blue;
+		}
+		li {
+			font-family: Arial;
+			font-size: 16px;
+			list-style-type: none;
+			color: black;
+			margin-left: 25px;
+		}
+		.code { 
+			font-family: Courier New, courier;
+			font-size: 16px;
+			color: blue;
+		}
+	</style>
+</head>
+	
+<body>
+	<div class="container">
+		<h1>CIS122 Software Design</h1>
+		<h3>BookStore Implementation - Transactions</h3>
+		<h3>Application Programming Interface</h3>
+		<h3>Version 1</h3>
+		
+		<h4>Utility functions</h4>
+		
+		<ul>Contains (arrayOfValues, value)
+			<li>
+				Returns a boolean value; true of value is found in array, false if not. This does not work with two dimensional arrays; 
+				it will not check to see if an array is within the outer array. It will not check for an inner array containing a value.
+				If you want to search the contents of an inner array, obtain the inner array and pass it into this function.
+			</li>
+			<li><span class='code'>arrayOfValues </span>- the array you are searching to see if it contains a value.</li>
+			<li><span class='code'>value </span>- the value you are searching for.</li>
+		</ul>
+		
+		<ul>convertType(type)
+			<li>
+				Converts transaction types from numeric value to text value. Returns the text for the type of transaction,
+				either 'Sale' or 'Return'.</li>
+			<li><span class='code'>type </span>- pass in either 1 or 2, using the const values: SALE or RETURN</li>
+		</ul>
+		
+		<ul>clearDisplayTable()
+			<li>Clears the previously displayed html table of results.</li>
+		</ul>
+		
+		<ul>sortBy(index)
+			<li>
+				Sort by the index. To use, pass this function call into the argument of an array sort function.
+				It will sort the contents of the array by the value found at the index of the array. In other words,
+				if you wish to sort by title, pass in the index of the title field in the array. Do not pass in the 
+				title of a book.
+			</li>
+			<li>Example: <span class='code'>var sortedFilteredTransactions = filteredTransactions.sort(sortBy(filterOption));</span></li>
+			<li>
+				<span class='code'>index </span>- the index of the field in the array upon which you wish to sort. This is not a value you
+				expect to find in the array, but only to sort on the contents of the index in the array.
+			</li>
+		</ul>
+		
+		<ul>IsNotNullOrUndefined(value)
+			<li>Returns true if the value is both not null and not undefined. </li>
+			<li><span class='code'>value </span>- a single depth variable (not an array) that you want to confirm is not null, and not undefined.</li>
+		</ul>
+		
+		<h4>Transaction Functions</h4>
+		
+		<ul>getAllTransactions()
+			<li>Gets all transactions in the db.</li>
+			<li>Returns an array of transaction objects.</li>
+		</ul>
+		
+		<ul>getBookAuthorByISBN(isbn)
+			<li>If the identified book exists, returns the author's name. Returns null if the book was not found.</li>
+			<li><span class='code'>isbn </span>- a number representing a book. Can be in any of the valid isbn formats.</li>
+		</ul>
+		
+		<ul>getBookPublisherByISBN(isbn)
+			<li>If the identified book exists, returns the publisher's name. Returns null if the book was not found.</li>
+			<li><span class='code'>isbn </span>- a number representing a book. Can be in any of the valid isbn formats.</li>
+		</ul>
+		
+		<ul>getBookTitleByISBN(isbn)
+			<li>If the identified book exists, returns the title. Returns null if the book was not found.</li>
+			<li><span class='code'>isbn </span>- a number representing a book. Can be in any of the valid isbn formats.</li>
+		</ul>
+		
+		<ul>getBookWholesalePrice(isbn)
+			<li>Returns the wholesale price of the identified book, if the book exists. Returns null if the book was not found.</li>
+			<li><span class='code'>isbn </span>- a number representing a book. Can be in any of the valid isbn formats.</li>
+		</ul>
+		
+		<ul>getFilterOptionByISBN(isbn, filterOption)
+			<li>
+				Returns the title, author or publisher of the book, depending on which one you ask for, as provided in filterOption, 
+				for the book by isbn.
+			</li>
+			<li><span class='code'>isbn </span>- a number representing a book. Can be in any of the valid isbn formats.</li>
+			<li><span class='code'>filterOption </span>- either TITLE, AUTHOR, or PUBLISHER, in caps, representing a const value.</li>
+		</ul>
+		
+		<ul>getTransactionsBetweenDates(startDate, endDate)
+			<li>
+				Gets all transactions between the two dates if the dates are valid. If endDate is before startDate, this returns empty.
+				If one of the dates is empty, the result is either everything up to the end date, or everything after the start date, 
+				depending on the non-empty date. Dates are inclusive.
+			</li>
+			<li><span class='code'>startDate </span>- the beginning date of the search. Must be in this format: (mm/dd/yyy).</li>
+			<li><span class='code'>endDate </span>- the ending date of the search. Must be in this format: (mm/dd/yyy).</li>
+		</ul>
+		
+		<h4>Display Functions</h4>
+		<ul>showAccountingResults(startDate, endDate, searchPoint, searchResults)
+			<li>displays accounting results. You can choose which items are displayed thus:</li>
+			<li><span class='code'> startDate</span>- the beginning date of the search. Must be in valid format (mm/dd/yyy) before the end date and is inclusive.</li>
+			<li><span class='code'> endDate</span>- the ending date of the search. Must be in valid format (mm/dd/yyy) after the start date and is inclusive.</li>
+			<li><span class='code'> searchPoint</span>- 
+						what the data stype is, ie, TITLE, PUBLISHER, AUTHOR. This is also the text for the display column header in the display.
+			</li>
+			<li><span class='code'> searchResults</span>- 
+						searchResults must be an array of arrays, the terminal arrays contain the <span style='color: purple;'>name of the author, publisher or book title</span>
+						according to the search criteria, the <span style='color: purple;'>copy count</span> and the <span style='color: purple;'>profit/loss</span>
+						for the sales represented.
+			</li>
+		</ul>
+		
+		<ul>showTransactions(accountingResults)
+			<li>Builds the html table to display the raw searchResults. SearchResults must be an array of transactions. Transactions themselves are arrays.</li>
+			<li><span class='code'>searchResults </span>- an array of transaction arrays. Displays all of the fields in the transaction.</li>
+		</ul>
+		
+		<h4>Housekeeping</h4>
+		<ul>reloadTransactions()
+			<li>Drops the transaction table, recreates it and reloads the original data.</li>
+		</ul>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

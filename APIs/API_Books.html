@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title> BookStore First API </title>
+	<meta name="author" content="Lee Middleton" />
+	<meta name="keywords" content="CIS122" />
+	<meta name="description" content="BookStore Database BookSearch API" />
+	<link rel="stylesheet" type="text/css" href="../css/style.css" />
+	<style type='text/css'>
+		ul {
+			font-family: Courier New, courier;
+			font-size: 20px;
+			color: blue;
+		}
+		li {
+			font-family: Arial;
+			font-size: 16px;
+			list-style-type: none;
+			color: black;
+			margin-left: 25px;
+		}
+		.code { 
+			font-family: Courier New, courier;
+			font-size: 16px;
+			color: blue;
+		}
+	</style>
+</head>
+	
+<body>
+	<div class="container">
+		<h1>CIS122 Software Design</h1>
+		<h3>BookStore Implementation - BookSearch</h3>
+		<h3>Application Programming Interface</h3>
+		<h3>Database version</h3>
+		
+		<ul>getAllBooks()
+			<li>Displays all books found in the BookStore book table.</li>
+		</ul>
+		
+		<ul>getBookByIsbn(isbn)
+			<li>Returns a unique example of a book (as a book object) identified by the supplied isbn, if found; the object will be empty if not found.</li>
+			<li><span class="code">isbn</span> - a string containing the isbn to search for.</li>
+		</ul>
+		
+		<ul>getBookByTitle(title)
+			<li>Returns a unique example of the book (as a book object) with the supplied title, if found; the object will be empty if not found.</li>
+			<li><span class="code">title</span> - a string containing the book title to search for.</li>
+		</ul>
+		
+		<ul>getBooksByAuthor(author)
+			<li>Returns an array of book objects if any are found; an empty array if not.</li>
+			<li><span class="code">author</span> - a string containing the name of the author to search for.</li>
+		</ul>
+		
+		<ul>getBooksByPublisher(publisher)
+			<li>Returns an array of book objects if any are found; an empty array if not.</li>
+			<li><span class="code">publisher</span> - a string containing the name of the publisher to search for.</li>
+		</ul>
+		
+		<ul>getBooksUsingKeywords(words, searchParam)
+			<li>Returns an array of book objects if any are found; an empty array of not.</li>
+			<li><span class="code">words</span> - a comma separated string of words to search for filtered by the searchParam.</li>
+			<li><span class="code">searchParam</span> - title is the only parameter by which you can search using key words in this API.</li>
+		</ul>
+		
+		<ul>showBooks(searchResults)
+			<li>Displays the books found in previous searches.</li>
+			<li><span class="code">searchResults</span> - an array of book objects if any are found; an empty array if not.</li>
+		</ul>
+			
+		<ul>getAuthors()
+			<li>Returns an array of unique author names in ascending order by whole name.</li>
+		</ul>
+		
+		<ul>getPublishers()
+			<li>Returns an array of unique publisher names in ascending order.</li>
+		</ul>
+		
+		<h4>Housekeeping</h4>
+		<ul>deleteAllBooks()
+			<li>Drops the book table and recreates it without any books.</li>
+		</ul>
+		
+		<ul>reloadBooks()
+			<li>Drops the book table and recreates it before reloading it with the original book data data.</li>
+		</ul>
+		
+		<h4>Utilities</h4>
+		<ul>convertToObject(string)
+			<li>Converts data from the database into objects or object collections. You do not need ever to call this function that is interal to the API.</li>
+		</ul>
+		
+		<ul>convertToArray(string)
+			<li>Converts data from the database into an array. You need never call this function that is internal to the API.</li>
+		</ul>
+	</div>
+</body>
+</html>

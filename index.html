@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Bookstore Home</title>
+	<link rel="stylesheet" href="css/style.css" TYPE="text/css" />
+	<link rel="stylesheet" href="css/tabs.css" type="text/css" />
+	<script src="scripts/bookFunctions.js"></script>
+	<script src="scripts/transactionFunctions.js"></script>
+
+	<script> // Page specific
+		function showCorrectTabBody(that)
+		{
+			var tab = that.firstChild.innerHTML;
+			switch(tab)
+			{
+				case 'Books':
+					document.getElementById('result').style.display = "block";
+					document.getElementById('transactionResult').style.display = "none";
+					document.getElementById('housekeepingResult').style.display = "none";
+					break;
+				case 'Transactions':
+					document.getElementById('transactionResult').style.display = "block";
+					document.getElementById('result').style.display = "none";
+					document.getElementById('housekeepingResult').style.display = "none";
+					break;
+				case 'Housekeeping':
+					document.getElementById('housekeepingResult').style.display = "block";
+					document.getElementById('transactionResult').style.display = "none";
+					document.getElementById('result').style.display = "none";
+					break;
+			}
+		}
+	</script>
+	<script> // Book functions
+		function getAllOfTheBooks()
+		{
+			clearScreen("result");
+			showBooks(getAllBooks());
+		}
+		// Add your custom functions for book searches here
+
+		function searchForBookByISBN(isbn)
+		{
+		  clearScreen("result");
+			var book = getBookByIsbn(isbn);
+			var bookArray = [book];
+			showBooks(bookArray);
+		}
+
+		function searchForBookByTitle(title)
+		{
+			clearScreen("result");
+			var book = getBookByTitle(title);
+			var bookArray = [book];
+			showBooks(bookArray);
+		}
+
+		function searchForBookByAuthor(author)
+		{
+			clearScreen("result");
+			var books = getBooksByAuthor(author);
+			showBooks(books);
+	  }
+
+		function searchForBookByPublisher(publisher)
+		{
+			clearScreen("result");
+			var books = getBooksByPublisher(publisher);
+			showBooks(books);
+		}
+
+		function clearScreen(screen)
+		{
+			document.getElementById('inValue').value = "";
+			document.getElementById(screen).innerHTML = "";
+		}
+
+		function loadSelections(val)
+		{
+			var selector = document.getElementById('loadedSelections');
+			selector.length = 0;
+			if (val == 'isbn' || val == 'title')
+			{
+				document.getElementById('inValue').style.display = "block";
+				document.getElementById('loadedSelections').style.display = "none";
+			}
+			else if (val == 'author')
+			{
+				var authors = getAuthors();
+				for (author in authors)
+				{
+					var name = authors[author].AUTHOR;
+					selector.options[selector.options.length] = new Option(name, name);
+				}
+				document.getElementById('inValue').style.display = "none";
+				document.getElementById('loadedSelections').style.display = "block";
+			}
+			else if (val == 'publisher')
+			{
+				var publishers = getPublishers();
+				for (publisher in publishers)
+				{
+					var name = publishers[publisher].PUBLISHER;
+					selector.options[selector.options.length] = new Option(name, name);
+				}
+				document.getElementById('inValue').style.display = "none";
+				document.getElementById('loadedSelections').style.display = "block";
+			}
+		}
+   // Search functions that take user input
+		function match()
+		{
+			var inValue = document.getElementById("inValue").value;
+			var searchOption = document.getElementById("searchBy").value;
+		  var author = document.getElementById("loadedSelections").value;
+		  var publisher = document.getElementById("loadedSelections").value;
+
+			switch (searchOption)
+			{
+				case "isbn":
+					searchForBookByISBN(inValue);
+					break;
+				case "title":
+					searchForBookByTitle(inValue);
+					break;
+				case "author":
+					searchForBookByAuthor(author);
+					break;
+				case "publisher":
+					searchForBookByPublisher(publisher);
+					break;
+			}
+		}
+		function keywordSearch()
+		{ // Get user input and do title searches by keywords
+
+			var inValue = document.getElementById("inValue").value;
+			var searchOption = document.getElementById("searchBy").value
+			clearScreen("result");
+			showBooks(getBooksUsingKeywords(inValue, searchOption));
+		 }
+	</script>
+	<script> // Transaction functions
+		function getAllOfTheTransactions()
+		{
+			var transactions = getAllTransactions();
+			showTransactions(transactions);
+		}
+	</script>
+</head>
+<body onload="document.getElementById('booksLink').click();">
+	<h1>CIS 122 - Software Design</h1>
+	<h1>By: Jessica Hori</h1>
+	<h2>Bookstore Management Application</h2>
+	<article class="tabs">
+		<section id="books">
+			<h6 class='tab' onclick='showCorrectTabBody(this);'><a href="#books" id='booksLink'>Books</a></h6>
+			<p style='margin: 0; padding: 0;' >
+				<input type='text' id='inValue' style='float: left; height: 15px; margin-right: 5px; font-size: 12px; width: 200px;' />
+				<select style='display: none; float: left; height: 21px; margin-right: 5px; font-size: 12px;' id='loadedSelections'></select>
+				<select id='searchBy' onchange='loadSelections(this.value);' style='height: 21px; margin-right: 5px; font-size: 12px; float: left;'>
+					<option value='isbn'>ISBN</option>
+					<option value='title'>Title</option>
+					<option value='author'>Author</option>
+					<option value='publisher'>Publisher</option>
+				</select>
+				<button style='height: 21px; margin: 0;' onclick='match()'>Match</button>
+				<button style='height: 21px; margin: 0;' onclick='keywordSearch()'>Keyword</button>
+				<input type='button' value='Get all books' onclick='getAllOfTheBooks();' style='float: right;' />
+				<input type='button' value='Clear' onclick="clearScreen('result');" style='float: right; margin-right: 15px;' />
+			</p>
+			<p id='result'></p>
+		</section>
+
+		<section id='transactions'>
+			<h6 class='tabs' onclick='showCorrectTabBody(this);'><a href='#transactions'>Transactions</a></h6>
+			<input type='button' value='Clear' onclick="clearScreen('transactionResult')" />
+			<input type='button' value='Get all transactions' onclick='getAllOfTheTransactions();' />
+			<p id='transactionResult'></p>
+		</section>
+
+		<section id="housekeeping">
+			<h6 class='tab' onclick='showCorrectTabBody(this);'><a href="#housekeeping">Housekeeping</a></h6>
+			<p style='margin-top: 0; padding: 0;' >
+				<input type='button' value='Delete All Books' onclick='deleteAllBooks();' style='margin-right: 5px;' />
+				<input type='button' value='Restore Books Table' onclick='reloadBooks();' />
+			</p>
+			<hr />
+			<p>
+				<input type='button' value='Delete All Transactions' onclick='deleteAllTransactions();' style='margin-right: 5px;' />
+				<input type='button' value='Restore Transactions Table' onclick='reloadTransactions();' />
+			</p>
+			<p id='housekeepingResult'></p>
+		</section>
+	</article>
+</body>
+</html>
